@@ -17,7 +17,9 @@ function puzzle(index,size=15){
   ['GLOOM','TIGER','NIGHTFALL','LIGHT'],
   ['BROOM','METAL','NORTHWARD','DREAM']
  ];
- const [left,right,middle,finalWord]=pairs[Math.abs(index)%pairs.length];
+ // Pick a fresh pair whenever a puzzle is initialized so replaying or
+ // refreshing gives players a new starting point.
+ const [left,right,middle,finalWord]=pairs[Math.floor(Math.random()*pairs.length)];
  const leftRow=0;
  const rightRow=size-1;
  const seeds=[{text:left,r:leftRow,c:0,dir:'h',seed:true},{text:right,r:rightRow,c:size-right.length,dir:'h',seed:true}];
