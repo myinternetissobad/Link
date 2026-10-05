@@ -7,7 +7,8 @@ function validate(words,word,dictionary,size=15){const fail=reason=>({valid:fals
 const before={r:word.r-(word.dir==='v'?1:0),c:word.c-(word.dir==='h'?1:0)},last=path.at(-1),after={r:last.r+(word.dir==='v'?1:0),c:last.c+(word.dir==='h'?1:0)};if([before,after].some(p=>p.r>=0&&p.r<size&&p.c>=0&&p.c<size&&b.has(p.r*size+p.c)))return fail('Leave a blank square at each end of your word.');if(!added)return fail('Add at least one new letter.');const comps=components(words,size),ids=[...crossed];const winning=ids.length===2&&comps[ids[0]]!==comps[ids[1]];if(ids.length!==1&&!winning)return fail('Cross exactly one word, or join both chains with your final word.');return{valid:true,winning,cost:10+word.text.length,reason:winning?'The final link! Connect both chains.':`Valid link · +${10+word.text.length} points`}}
 function puzzle(index,size=15){
  // The route is fixed and verified; the pair of starting words changes daily.
- // The seeds sit on opposite edges so the objective is immediately readable.
+ // The seeds anchor the route at opposite corners so the objective is
+ // immediately readable on every board size.
  const pairs=[
   ['BLOOM','TIGER','NIGHTFALL','LIGHT'],
   ['GLOOM','MANGO','NORTHWARD','DREAM'],
@@ -17,10 +18,9 @@ function puzzle(index,size=15){
   ['BROOM','METAL','NORTHWARD','DREAM']
  ];
  const [left,right,middle,finalWord]=pairs[Math.abs(index)%pairs.length];
- const leftRow=Math.max(1,Math.floor(size*.18));
- const rightRow=Math.min(size-2,Math.floor(size*.78));
- const rightColumn=Math.max(0,size-5);
- const seeds=[{text:left,r:leftRow,c:0,dir:'h',seed:true},{text:right,r:rightRow,c:rightColumn,dir:'h',seed:true}];
+ const leftRow=0;
+ const rightRow=size-1;
+ const seeds=[{text:left,r:leftRow,c:0,dir:'h',seed:true},{text:right,r:rightRow,c:size-right.length,dir:'h',seed:true}];
  // The first hint is deliberately local to the left seed. Larger boards are
  // open canvases: players can build their own route across the extra space.
  const solution=[{text:'OCEAN',r:leftRow,c:2,dir:'v'}];
