@@ -8,9 +8,11 @@ if(!added)return fail('Add at least one new letter.');const comps=components(wor
 function puzzle(index,size=15){
  const dictionary=globalThis.WORD_DICTIONARY;
  const pool=dictionary?[...dictionary].filter(word=>/^[A-Z]{3,8}$/.test(word)&&word.length<size):['BLOOM','TIGER','GLOOM','MANGO','BROOM','METAL'];
- const left=pool[Math.floor(Math.random()*pool.length)];
- let right=pool[Math.floor(Math.random()*pool.length)];
- while(right===left)right=pool[Math.floor(Math.random()*pool.length)];
+ let seed=(Math.abs(index)*1103515245+12345)>>>0;
+ const random=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296};
+ const left=pool[Math.floor(random()*pool.length)];
+ let right=pool[Math.floor(random()*pool.length)];
+ while(right===left)right=pool[Math.floor(random()*pool.length)];
  const leftRow=0;
  const rightRow=size-1;
  const seeds=[{text:left,r:leftRow,c:0,dir:'h',seed:true},{text:right,r:rightRow,c:size-right.length,dir:'h',seed:true}];
